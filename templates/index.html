@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}" />
+  <meta property="og:title" content="{{ title }}" />
+  <meta property="og:description" content="{{ description }}" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Navbar -->
+    <header class="navbar" id="navbar">
+      <div class="navbar-inner">
+        <div class="brand">
+          <div class="brand-mark">
+            <svg viewBox="0 0 24 24" class="icon-sm" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a5 5 0 0 0-5 5v3a5 5 0 0 0 5 5 5 5 0 0 0 5-5V7a5 5 0 0 0-5-5z"/>
+              <path d="M12 15v7"/>
+            </svg>
+          </div>
+          <span class="brand-name">MindScan</span>
+        </div>
+        <div class="step-dots" id="stepDots"></div>
+      </div>
+    </header>
+
+    <main class="main-content">
+
+      <!-- Landing -->
+      <section class="stage stage-landing animate-fade-in" id="stage-landing">
+        <div class="badge-pill">
+          <span class="pulse-dot-wrap">
+            <span class="pulse-dot-ping"></span>
+            <span class="pulse-dot-core"></span>
+          </span>
+          Not a medical diagnosis · Self-assessment only
+        </div>
+
+        <h1 class="landing-title">Understand how you really feel.</h1>
+        <p class="landing-lead">
+          MindScan is a private, science-informed wellness check. Answer a few questions about your mood, sleep, and energy — get a clear picture of where you stand.
+        </p>
+
+        <div class="landing-cta-row">
+          <button class="btn btn-primary btn-lg group" id="btnStart">
+            Start Assessment
+            <svg viewBox="0 0 24 24" class="icon-xs arrow-icon" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M13 5l7 7-7 7"/>
+            </svg>
+          </button>
+          <span class="landing-cta-note">Takes about 5 minutes · Fully anonymous</span>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-label">Modules</div>
+            <div class="feature-value">6</div>
+            <div class="feature-desc">Comprehensive checks</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-label">Duration</div>
+            <div class="feature-value">5 min</div>
+            <div class="feature-desc">Quick &amp; focused</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-label">Privacy</div>
+            <div class="feature-value">100%</div>
+            <div class="feature-desc">Nothing stored</div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-label">Result</div>
+            <div class="feature-value">Score</div>
+            <div class="feature-desc">Wellness insight</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About You -->
+      <section class="stage stage-about animate-fade-in hidden" id="stage-about">
+        <div class="eyebrow">Module 1</div>
+        <h2 class="section-title">A couple of quick details</h2>
+        <p class="section-lead">The prediction model uses these to calibrate your result. Nothing is stored after your session ends.</p>
+
+        <div class="field-block">
+          <label class="field-label">Gender</label>
+          <div class="gender-grid">
+            <button class="option-btn" data-gender="M" id="genderM">Male</button>
+            <button class="option-btn" data-gender="F" id="genderF">Female</button>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <label class="field-label" for="ageInput">Age</label>
+          <input type="number" min="10" max="100" id="ageInput" placeholder="Enter your age" class="text-input" />
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost" id="aboutBack">← Back</button>
+          <button class="btn btn-primary" id="aboutNext" disabled>Next →</button>
+        </div>
+      </section>
+
+      <!-- Questionnaire -->
+      <section class="stage stage-questions animate-fade-in hidden" id="stage-questions">
+        <div class="q-top-row">
+          <span class="q-category" id="qCategory"></span>
+          <span class="q-counter" id="qCounter"></span>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-fill" id="qProgress"></div>
+        </div>
+
+        <div class="timeframe-badge">
+          <span>Assessment Timeframe</span>
+        </div>
+
+        <p class="section-lead" style="margin-top: 0.75rem;">
+          Please answer each question based on how you have felt during the
+          <span class="strong-fg">past 2 weeks</span>.
+        </p>
+
+        <h2 class="question-title" id="qText"></h2>
+
+        <div class="options-list" id="qOptions"></div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost" id="qBack">← Back</button>
+          <button class="btn btn-primary" id="qNext" disabled>Next →</button>
+        </div>
+      </section>
+
+      <!-- Mood Tracker -->
+      <section class="stage stage-mood animate-fade-in hidden" id="stage-mood">
+        <div>
+          <div class="eyebrow">Module 2</div>
+          <h2 class="section-title">How are you feeling today?</h2>
+        </div>
+
+        <div class="field-block">
+          <label class="field-label">Pick your mood</label>
+          <div class="mood-grid" id="moodGrid"></div>
+        </div>
+
+        <div class="field-block">
+          <label class="field-label">What color matches your mood?</label>
+          <div class="color-row" id="colorRow"></div>
+        </div>
+
+        <div class="field-block">
+          <div class="energy-top-row">
+            <label class="field-label" style="margin:0;">Energy level</label>
+            <span class="energy-value" id="energyValue"></span>
+          </div>
+          <input type="range" min="0" max="100" value="50" class="energy-slider" id="energySlider" />
+          <div class="energy-labels-row">
+            <span>Exhausted</span><span>Energized</span>
+          </div>
+        </div>
+
+        <div class="field-block">
+          <label class="field-label">Your week at a glance</label>
+          <div class="week-card">
+            <div class="week-bars" id="weekBars"></div>
+          </div>
+        </div>
+
+        <div class="nav-row">
+          <button class="btn btn-ghost" id="moodBack">← Back</button>
+          <button class="btn btn-primary" id="moodNext" disabled>See results →</button>
+        </div>
+      </section>
+
+      <!-- Loading -->
+      <div class="loading-block animate-fade-in hidden" id="stage-loading">
+        <p class="muted-text">Analyzing your responses with the trained model…</p>
+      </div>
+
+      <!-- Error -->
+      <div class="error-block animate-fade-in hidden" id="stage-error">
+        <p class="error-text" id="errorMessage"></p>
+        <button class="btn btn-primary" id="retryBtn">Try again</button>
+      </div>
+
+      <!-- Results -->
+      <section class="stage stage-results animate-fade-in hidden" id="stage-results">
+        <div class="crisis-alert hidden" id="crisisAlert">
+          <div class="crisis-icon">🚨</div>
+          <div>
+            <div class="crisis-title">Please seek professional help</div>
+            <p class="crisis-text">
+              Your responses indicate thoughts of self-harm. Please reach out to a mental health
+              professional or crisis line today. You are not alone.
+            </p>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="ring-wrap">
+            <svg viewBox="0 0 200 200" class="ring-svg">
+              <circle cx="100" cy="100" r="80" stroke="var(--color-border)" stroke-width="14" fill="none" />
+              <circle cx="100" cy="100" r="80" stroke="var(--color-primary)" stroke-width="14" fill="none"
+                stroke-linecap="round" id="ringProgress" />
+            </svg>
+            <div class="ring-center">
+              <div class="ring-number" id="ringNumber">0</div>
+              <div class="ring-suffix">/ 100</div>
+            </div>
+          </div>
+          <div class="summary-text">
+            <div class="risk-badge" id="riskBadge">
+              <span id="riskEmoji"></span> <span id="riskLabel"></span> risk
+            </div>
+            <h2 class="summary-title">Your wellness snapshot</h2>
+            <p class="summary-message" id="summaryMessage"></p>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="subsection-title">Model output</h3>
+          <div class="model-output-grid">
+            <div class="output-card">
+              <div class="output-label">Depressed score</div>
+              <div class="output-value" id="depressedScoreOut"></div>
+            </div>
+            <div class="output-card">
+              <div class="output-label">Not-depressed score</div>
+              <div class="output-value" id="notDepressedScoreOut"></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="subsection-title">Recommendations</h3>
+          <div class="recs-grid" id="recsGrid"></div>
+        </div>
+
+        <div class="retake-row">
+          <button class="btn btn-primary btn-lg" id="retakeBtn">Retake Assessment</button>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        This is not a medical diagnosis. If you are in crisis, please contact a mental health professional.
+      </div>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', path='js/app.js') }}"></script>
+</body>
+</html>
