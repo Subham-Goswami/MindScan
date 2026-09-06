@@ -93,7 +93,7 @@
     { icon: "📵", title: "Reduce stimulation", desc: "Try 30 minutes without screens before bed." },
   ];
   const RECS_HIGH = [
-    { icon: "🆘", title: "Reach a crisis line", desc: "988 (US) · 116 123 (UK Samaritans) · iasp.info for global lines." },
+    { icon: "🆘", title: "Reach a crisis line", desc: "Need support? Tele-MANAS: 14416 / 1800-89-14416 · 24×7 in India." },
     { icon: "👥", title: "Don't be alone", desc: "Stay with someone you trust until you can speak to a professional." },
     { icon: "🩺", title: "Book a clinician", desc: "A licensed therapist or doctor can guide next steps." },
   ];
